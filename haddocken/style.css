@@ -1,0 +1,21 @@
+#coco {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+#greeting-image {
+    align-self: center;
+    max-width: 80%;
+    height: auto;
+}
+
+#greeting-text {
+    align-self: center;
+    text-align: center;
+    padding: 0 10%;
+    margin: 1%;
+    font-family: TintinRegular;
+    font-size: 40pt;
+}
