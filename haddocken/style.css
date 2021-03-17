@@ -2,13 +2,13 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
 }
 
 #greeting-image {
     align-self: center;
     max-width: 80%;
     height: auto;
+    cursor: pointer;
 }
 
 #greeting-text {
