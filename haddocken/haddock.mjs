@@ -2,7 +2,7 @@
 
 import { default as wasm, greet } from "./pkg/hello_wasm.js";
 
-document.getElementById('coco')
+document.getElementById('greeting-image')
     .addEventListener('click', event => {
         speak();
     });
