@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Les certificats HTTPS</title>
+  <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+<a href="..">Liste des articles</a>
+<div id="article-body">
+  <h1>Les certificats HTTPS</h1>
+  <p>
+    Dans cet article, je vais essayer d’expliquer le fonctionnement des certificats HTTPS
+    en simplifiant pour qu’on puisse s’y retrouver un minimum sans avoir beaucoup de connaissances
+    en informatique.
+    L’idée est de comprendre ce qui est sécurisé et ce qui ne l’est pas,
+    ce que signifient les avertissements donnés par le navigateur selon les situations rencontrées
+    et quelles sont les garanties apportées par ces fameux certificats.
+  </p>
+
+  <span class="author-date"><a href="mailto:rpigab@gmail.com">rpigab</a> - 02/06/2021</span>
+
+  <h2>Introduction</h2>
+  <p>
+    Je ne suis pas expert en sécurité informatique mais développeur "touche à tout",
+    donc les informations que je vais donner peuvent contenir des erreurs ou manquer de précision,
+    mais j’ai souvent besoin de donner ces explications et plutôt que de me répéter,
+    je pourrai donner le lien de cet article, car je n’ai pas trouvé ailleurs d’autre explication
+    accessible qui aille de l’explication générale jusqu’au détail dans le contexte des arnaques sur
+    internet par exemple.
+  </p>
+
+  <h2>Qu’est-ce qu’un certificat HTTPS ?</h2>
+  <p>
+    Un certificat HTTPS est un certificat électronique qu’on peut voir comme un simple fichier
+    ou ensemble de fichiers qui est généré par une autorité de certification, organisme qui atteste
+    le lien entre l’identité d’une personne physique ou morale et une entité numérique, qu’on peut
+    simplifier à un site par son nom de domaine (exemple de nom de domaine&nbsp;: example.org).
+  </p>
+
+  <h2>Le protocole HTTP</h2>
+  <p>
+    Lorsqu’un navigateur visite un site web, chaque page est un simple document (pour simplifier,
+    je suppose une page statique, sans contenu dynamique). Demander la page
+    http://site.com/document.html, c’est envoyer une requête à l’adresse IP qui se trouve derrière
+    le nom de domaine "site.com" en indiquant qu’on demande le document nommé "document.html".
+    Le serveur qui reçoit la requête répond alors en envoyant le document, c’est ce qu’on appelle
+    la réponse.
+  </p>
+  <p>
+    Ce "rituel" de communication entre un client et un serveur par succession de
+    requêtes et réponses est la base du protocole HTTP. HTTP n’offre pas de garanties importantes
+    de sécurité, même si le serveur peut exiger un mot de passe du client avant d’envoyer le
+    document, il est possible qu’une tierce personne ayant accès par exemple à un équipement
+    réseau situé entre le client et le serveur lise le message, le modifie, ou que le document
+    soit brouillé par une erreur de transmission dû à un problème de qualité du réseau.
+  </p>
+  <h2>Le protocole HTTPS : HTTP Secure</h2>
+  <p>
+    Le protocole HTTPS apporte de nombreuses garanties pour répondre à ces besoins en ajoutant
+    une couche de chiffrement par dessus le protocole HTTP.
+  </p>
+  <p>
+    Lorsque le client demande un document,
+    lui et le serveur doivent d’abord se mettre d’accord sur la façon dont ils vont sécuriser
+    l’échange d’information dans les deux sens. Savent-ils tous deux utiliser les mêmes algorithmes
+    de sécurité dans des versions compatibles&nbsp;? Quelle l’option la plus sécurisée parmi celles
+    qu’ils ont en commun ? Le client doit également vérifier qu’il a des raisons de faire confiance
+    au serveur, si le client connait les autorités de certification qui ont validé le certificat
+    du serveur par exemple. Ensuite, ils s’échangent les clés qui servent à chiffrer les messages
+    dans un sens comme dans l’autre. Tout ceci se fait automatiquement en une fraction de seconde,
+    c’est ce qu’on appelle le handshake (poignée de main).
+  </p>
+  <p>
+    Enfin, les requêtes et réponses sont les mêmes qu’en HTTP, mais chiffrées à l’aide des clés.
+    En simplifiant comme je viens de le faire, on pourrait croire qu’une personne tierce pourrait
+    intercepter les clés, ou se faire passer pour le serveur, mais le principe de chiffrement à clé
+    asymétrique protège contre ce problème, à condition que tout soit fait dans les règles de l’art.
+    Le chiffrement asymétrique est un sujet très intéressant qu’il est utile de découvrir pour
+    comprendre bien d’autres échanges sécurisés comme le chiffrement de bout en bout, utilisé par
+    exemple dans les messageries instantanées comme Signal.
+  </p>
+  <p>
+    Article pour aller plus loin sur le chiffrement&nbsp;:
+    <a href="https://www.cnil.fr/fr/node/23022" target="_blank">
+      Comprendre les grands principes de la cryptologie et du chiffrement | CNIL</a>
+  </p>
+
+  <h2>Les garanties offertes par le certificat</h2>
+  <ul>
+    <li>Non répudiation&nbsp;:
+      Le certificat une fois délivré ne peut pas être remis en cause,
+      mais comporte une date d’expiration et nécessite d’être renouvelé à terme&nbsp;;
+    </li>
+    <li>Intégrité des données&nbsp;:
+      Assure que la transmission se fait sans erreur&nbsp;;
+    </li>
+    <li>Confidentialité&nbsp;:
+      Les données sont chiffrées dans les deux sens,
+      ce qui les rend illisibles en cas d’interception du message sur le réseau.
+    </li>
+  </ul>
+
+  <h2>Ce que le certificat ne garantit pas</h2>
+  <ul>
+    <li>Le contenu du site n’est pas validé par l’autorité de certification, et de toute façon,
+      le certificat ne fige pas le contenu du site à un instant T, rien n’empêche de présenter un
+      site correct lors de la création du certificat et de remplacer tout le contenu par une arnaque
+      qui vole des données de carte bancaire bien plus tard en gardant exactement
+      le même certificat&nbsp;;
+    </li>
+    <li>Si le site lui-même est malveillant et que des données sensibles sont entrées dans un
+      formulaire, comme un numéro de carte bancaire par exemple, le site reçoit ces données,
+      elles sont évidemment déchiffrées une fois arrivées à destination pour être utilisées par le
+      site, sinon rien ne fonctionnerait&nbsp;!
+    </li>
+  </ul>
+</div>
+</body>
+</html>

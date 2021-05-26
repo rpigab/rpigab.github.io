@@ -1,0 +1,26 @@
+body {
+    margin: 3% 5% 3% 5%;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: 1.3rem;
+}
+
+p {
+    text-align: justify;
+}
+
+h1 {
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+.author-date {
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+.author-date a {
+    text-decoration: none;
+}
